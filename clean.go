@@ -12,8 +12,8 @@ import (
 )
 
 var extensionsToClean = []string{".aux", ".log", ".out", ".html",
-	".bbl", ".blg", ".css", ".dvi", ".idv", ".lg", ".tmp", ".toc",
-	".xref", ".4ct", ".4tc", ".rtf", ".pdf"}
+	".bbl", ".blg", ".dvi", ".idv", ".lg", ".tmp", ".toc", ".xref",
+	".4ct", ".4tc", ".rtf", ".pdf", ".epub"}
 
 func clean() {
 	for _, montage := range configuration.Montages {
