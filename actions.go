@@ -23,11 +23,7 @@ func (action Action) String() string {
 
 // func assemble in assemble.go
 
-func list() {
-	for _,montage := range configuration.Montages {
-		fmt.Println(montage)
-	}
-}
+// func list in list.go
 
 // func count in count.go
 

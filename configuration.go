@@ -55,5 +55,5 @@ func checkConfiguration(configuration *Configuration) {
 }
 
 func (montage Montage) String() string {
-	return fmt.Sprintf("[%02d] %-12.12s [%s]", montage.Id, montage.Name, montage.Path)
+	return fmt.Sprintf("[%02d] %s [%s]", montage.Id, montage.Name, montage.Path)
 }

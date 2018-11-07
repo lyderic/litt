@@ -36,7 +36,7 @@ func getSelectedMontage() (montage Montage) {
 		}
 	}
 	if !found {
-		log.Fatalf("%s: montage not found! Try: litt -l\n", reference)
+		log.Fatalf("%s: montage not found! Try: 'litt list'\n", reference)
 	}
 	return
 }
