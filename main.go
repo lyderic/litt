@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	version = "0.0.4"
-	bullet = "⮞"
+	version = "0.0.7"
+	bullet  = "⮞"
 )
 
 var (

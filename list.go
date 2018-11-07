@@ -11,7 +11,7 @@ func list() {
 			ln = i
 		}
 	}
-	format := fmt.Sprintf("  [%%02d] %%-%d.%ds [%%s]",ln, ln)
+	format := fmt.Sprintf("  [%%02d] %%-%d.%ds [%%s]", ln, ln)
 	for _, montage := range configuration.Montages {
 		fmt.Printf(format, montage.Id, montage.Name, montage.Path)
 		if montage.Id == 1 {

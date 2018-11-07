@@ -55,17 +55,13 @@ func buildContent(montage Montage) {
 
 func buildpdf(montage Montage) {
 	fmt.Println("Creating PDF")
-	fmt.Printf("%s running pdflatex on %q\n", bullet, montage.Path)
 	montageDir := getMontageDir(montage)
 	montageTexName := filepath.Base(montage.Path)
 	montagePdfName := strings.Replace(montageTexName, ".tex", ".pdf", 1)
 	os.Chdir(montageDir)
-	cmd := exec.Command("pdflatex", montageTexName)
-	if verbose {
-		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-	}
-	if err := cmd.Run(); err != nil {
-		log.Fatal(err)
+	pdflatex(montageTexName)
+	if configuration.Double {
+		pdflatex(montageTexName)
 	}
 	pdfName := fmt.Sprintf("%s - %s.pdf", configuration.Title, configuration.Autor)
 	if tag {
@@ -74,4 +70,15 @@ func buildpdf(montage Montage) {
 	pdfFullPath := filepath.Join(basedir, pdfName)
 	os.Rename(montagePdfName, pdfFullPath)
 	fmt.Printf("%s created %q\n", bullet, pdfFullPath)
+}
+
+func pdflatex(tex string) {
+	fmt.Printf("%s running pdflatex on %q\n", bullet, tex)
+	cmd := exec.Command("pdflatex", tex)
+	if verbose {
+		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	}
+	if err := cmd.Run(); err != nil {
+		log.Fatal(err)
+	}
 }

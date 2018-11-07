@@ -7,18 +7,20 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
 	"github.com/lyderic/tools"
 )
 
 var extensionsToClean = []string{".aux", ".log", ".out", ".html", ".bbl", ".blg", ".css", ".dvi", ".idv", ".lg", ".tmp", ".toc", ".xref", ".4ct", ".4tc", ".rtf", ".pdf"}
 
 func clean() {
-	montage := getSelectedMontage()
-	fmt.Printf("Cleaning montage %q\n", montage.Name)
-	a := cleanDir(getMontageDir(montage))
-	b := cleanDir(basedir)
-	n := a + b
-	fmt.Printf("%d file%s removed\n", n, tools.Ternary(n > 1, "s", ""))
+	for _, montage := range configuration.Montages {
+		fmt.Printf("Cleaning montage %q\n", montage.Name)
+		a := cleanDir(getMontageDir(montage))
+		b := cleanDir(basedir)
+		n := a + b
+		fmt.Printf("%d file%s removed\n", n, tools.Ternary(n > 1, "s", ""))
+	}
 }
 
 func cleanDir(dir string) (n int) {

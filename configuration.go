@@ -20,6 +20,7 @@ type Configuration struct {
 	Title    string    `json:"title"`
 	Montages []Montage `json:"montages"`
 	Files    []string  `json:"files"`
+	Double   bool      `json:"double"` // when double compilation is required
 }
 
 func (configuration *Configuration) load() {
