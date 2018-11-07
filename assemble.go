@@ -21,7 +21,7 @@ func assemble() {
 	if !nocontent {
 		buildContent(montage)
 	}
-	pdf(montage)
+	buildpdf(montage)
 }
 
 func buildContent(montage Montage) {
@@ -53,9 +53,9 @@ func buildContent(montage Montage) {
 	}
 }
 
-func pdf(montage Montage) {
+func buildpdf(montage Montage) {
 	fmt.Println("Creating PDF")
-	fmt.Println(bullet, "pdflatex", montage.Path)
+	fmt.Printf("%s running pdflatex on %q\n", bullet, montage.Path)
 	montageDir := getMontageDir(montage)
 	montageTexName := filepath.Base(montage.Path)
 	montagePdfName := strings.Replace(montageTexName, ".tex", ".pdf", 1)
