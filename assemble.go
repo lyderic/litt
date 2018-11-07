@@ -37,7 +37,6 @@ func buildContent(montage Montage) {
 	}
 	cmd := exec.Command("pandoc", args...)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-	//fmt.Println(cmd)
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)

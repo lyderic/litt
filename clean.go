@@ -11,7 +11,9 @@ import (
 	"github.com/lyderic/tools"
 )
 
-var extensionsToClean = []string{".aux", ".log", ".out", ".html", ".bbl", ".blg", ".css", ".dvi", ".idv", ".lg", ".tmp", ".toc", ".xref", ".4ct", ".4tc", ".rtf", ".pdf"}
+var extensionsToClean = []string{".aux", ".log", ".out", ".html",
+	".bbl", ".blg", ".css", ".dvi", ".idv", ".lg", ".tmp", ".toc",
+	".xref", ".4ct", ".4tc", ".rtf", ".pdf"}
 
 func clean() {
 	for _, montage := range configuration.Montages {

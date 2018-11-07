@@ -15,6 +15,10 @@ type Montage struct {
 	Path string `json:"path"`
 }
 
+func (montage Montage) String() string {
+	return fmt.Sprintf("[%02d] %s [%s]", montage.Id, montage.Name, montage.Path)
+}
+
 type Configuration struct {
 	Autor    string    `json:"author"`
 	Title    string    `json:"title"`
@@ -53,8 +57,4 @@ func checkConfiguration(configuration *Configuration) {
 			log.Fatalf("Error in configuration file: %q\nMontage listed not found on disk: %+v\nFile not found: %q\n", jsonPath, montage, path)
 		}
 	}
-}
-
-func (montage Montage) String() string {
-	return fmt.Sprintf("[%02d] %s [%s]", montage.Id, montage.Name, montage.Path)
 }

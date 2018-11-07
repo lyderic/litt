@@ -21,14 +21,6 @@ func (action Action) String() string {
 	return fmt.Sprintf("  %s  %-10.10s %s", action.Letter, action.Name, action.Description)
 }
 
-// func assemble in assemble.go
-
-// func list in list.go
-
-// func count in count.go
-
-// func clean in clean.go
-
 func dump() {
 	fmt.Printf("%+v\n", configuration)
 }

@@ -22,7 +22,6 @@ func sanitizeAllFiles() {
 	}
 	n := idx + 1
 	fmt.Printf("%s %d file%s processed\n", bullet, n, tools.Ternary(n > 1, "s", ""))
-
 }
 
 func sanitizePath(idx int, path string) (err error) {
