@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	version = "0.0.1"
+	version = "0.0.2"
+	bullet = "⮞"
 )
 
 var (
@@ -36,12 +37,14 @@ func main() {
 	flag.Usage = usage
 	flag.Parse()
 	if _, err := os.Stat(jsonPath); os.IsNotExist(err) {
+		usage()
 		log.Fatal(err)
 	}
 	basedir = getParent(jsonPath)
 	configuration.load()
 	if len(flag.Args()) == 0 {
 		usage()
+		fmt.Println("Please provide an action!")
 		return
 	}
 	todo := flag.Args()[0]
@@ -62,7 +65,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Printf("litt v.%s - (c) Lyderic Landry, London 2018\n", version)
+	fmt.Printf("\nlitt v.%s - (c) Lyderic Landry, London 2018\n", version)
 	fmt.Println("Usage: litt [<option>] <action>")
 	fmt.Println("\n Actions:\n")
 	for _, action := range actions {
@@ -70,4 +73,9 @@ func usage() {
 	}
 	fmt.Println("\n Options:\n")
 	flag.PrintDefaults()
+	if len(configuration.Montages) > 0 {
+		fmt.Println("\n Montages:\n")
+		list()
+	}
+	fmt.Println()
 }

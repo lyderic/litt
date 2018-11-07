@@ -25,9 +25,10 @@ func assemble() {
 }
 
 func buildContent(montage Montage) {
-	fmt.Println("> pandoc: building content")
+	fmt.Println("Building content")
 	montageDir := getMontageDir(montage)
 	contentFile := filepath.Join(montageDir, "content.tex")
+	fmt.Println(bullet, "creating content.tex with pandoc")
 	var args []string
 	args = append(args, "-o")
 	args = append(args, contentFile)
@@ -41,7 +42,7 @@ func buildContent(montage Montage) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("> replacing \\section to \\chapter*")
+	fmt.Println(bullet, "replacing \\section to \\chapter*")
 	input, err := ioutil.ReadFile(contentFile)
 	if err != nil {
 		log.Fatal(err)
@@ -53,7 +54,8 @@ func buildContent(montage Montage) {
 }
 
 func pdf(montage Montage) {
-	fmt.Println("pdflatex", montage.Path)
+	fmt.Println("Creating PDF")
+	fmt.Println(bullet, "pdflatex", montage.Path)
 	montageDir := getMontageDir(montage)
 	montageTexName := filepath.Base(montage.Path)
 	montagePdfName := strings.Replace(montageTexName, ".tex", ".pdf", 1)
@@ -69,6 +71,7 @@ func pdf(montage Montage) {
 	if tag {
 		pdfName = fmt.Sprintf("%s - %s [%s-%s].pdf", configuration.Title, configuration.Autor, montage.Name, time.Now().Format("20060102150405"))
 	}
-	fmt.Printf("moving PDF to %s\n", pdfName)
-	os.Rename(montagePdfName, filepath.Join(basedir, pdfName))
+	pdfFullPath := filepath.Join(basedir, pdfName)
+	os.Rename(montagePdfName, pdfFullPath)
+	fmt.Printf("%s created %q\n", bullet, pdfFullPath)
 }

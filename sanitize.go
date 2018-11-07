@@ -8,13 +8,21 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/lyderic/tools"
 )
 
 func sanitizeAllFiles() {
-	for idx, file := range configuration.Files {
+	fmt.Println("Sanitizing")
+	var idx int
+	var file string
+	for idx, file = range configuration.Files {
 		path := filepath.Join(basedir, file)
 		sanitizePath(idx, path)
 	}
+	n := idx + 1
+	fmt.Printf("%s %d file%s processed\n", bullet, n, tools.Ternary(n > 1, "s", ""))
+
 }
 
 func sanitizePath(idx int, path string) (err error) {
@@ -37,7 +45,9 @@ func sanitizePath(idx int, path string) (err error) {
 		"  ", " "); err != nil {
 		return err
 	}
-	fmt.Printf("[%03d] %s: processed %d bytes in %s\n", idx+1, filepath.Base(path), nbytes, time.Since(start))
+	if verbose {
+		fmt.Printf("[%03d] %s: processed %d bytes in %s\n", idx+1, filepath.Base(path), nbytes, time.Since(start))
+	}
 	return
 }
 
