@@ -2,14 +2,14 @@ package main
 
 import "fmt"
 
-type Action struct {
+type Command struct {
 	Letter      string
 	Name        string
 	Description string
-	Function    func()
+	Action      func()
 }
 
-var actions = []Action{
+var commands = []Command{
 	{"a", "assemble", "assemble montage", assemble},
 	{"l", "list", "list montages", list},
 	{"n", "count", "count characters, bytes and words", count},
@@ -17,8 +17,8 @@ var actions = []Action{
 	{"d", "dump", "dump configuration", dump},
 }
 
-func (action Action) String() string {
-	return fmt.Sprintf("  %s  %-10.10s %s", action.Letter, action.Name, action.Description)
+func (command Command) String() string {
+	return fmt.Sprintf("  %s  %-10.10s %s", command.Letter, command.Name, command.Description)
 }
 
 func dump() {

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	version = "0.0.9"
+	version = "0.1.0"
 	bullet  = "⮞"
 )
 
@@ -44,32 +44,32 @@ func main() {
 	configuration.load()
 	if len(flag.Args()) == 0 {
 		usage()
-		fmt.Println("Please provide an action!")
+		fmt.Println("Please provide a command!")
 		return
 	}
 	todo := flag.Args()[0]
 	found := false
-	var action Action
-	for _, current := range actions {
+	var command Command
+	for _, current := range commands {
 		if current.Name == todo || current.Letter == todo {
 			found = true
-			action = current
+			command = current
 		}
 	}
 	if !found {
-		fmt.Printf("%s: invalid action.\n", todo)
+		fmt.Printf("%s: invalid command.\n", todo)
 		usage()
 		return
 	}
-	action.Function()
+	command.Action()
 }
 
 func usage() {
 	fmt.Printf("\nlitt v.%s - (c) Lyderic Landry, London 2018\n", version)
-	fmt.Println("Usage: litt [<option>] <action>")
-	fmt.Println("\n Actions:\n")
-	for _, action := range actions {
-		fmt.Println(action)
+	fmt.Println("Usage: litt [<option>] <command>")
+	fmt.Println("\n Commands:\n")
+	for _, command := range commands {
+		fmt.Println(command)
 	}
 	fmt.Println("\n Options:\n")
 	flag.PrintDefaults()
