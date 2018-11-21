@@ -39,14 +39,16 @@ func buildContent(montage Montage) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(bullet, "replacing \\section to \\chapter*")
-	input, err := ioutil.ReadFile(contentFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	output := bytes.Replace(input, []byte("\\section"), []byte("\\chapter*"), -1)
-	if err = ioutil.WriteFile(contentFile, output, 0644); err != nil {
-		log.Fatal(err)
+	for _, replacement := range configuration.Replacements {
+		fmt.Printf("%s replacing %q -> %q\n", bullet, replacement.From, replacement.To)
+		input, err := ioutil.ReadFile(contentFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		output := bytes.Replace(input, []byte(replacement.From), []byte(replacement.To), -1)
+		if err = ioutil.WriteFile(contentFile, output, 0644); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 

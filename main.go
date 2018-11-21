@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	version = "0.1.2"
+	version = "0.2.0"
 	bullet  = "⮞"
 )
 
@@ -45,17 +45,17 @@ func main() {
 		fmt.Println("Please provide a command!")
 		return
 	}
-	todo := flag.Args()[0]
+	action := flag.Args()[0]
 	found := false
 	var command Command
 	for _, current := range commands {
-		if current.Name == todo || current.Letter == todo {
+		if current.Name == action || current.Letter == action {
 			found = true
 			command = current
 		}
 	}
 	if !found {
-		fmt.Printf("%s: invalid command.\n", todo)
+		fmt.Printf("%s: invalid command.\n", action)
 		usage()
 		return
 	}

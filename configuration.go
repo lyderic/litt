@@ -19,12 +19,18 @@ func (montage Montage) String() string {
 	return fmt.Sprintf("[%02d] %s [%s]", montage.Id, montage.Name, montage.Path)
 }
 
+type Replacement struct {
+	From string `json:"from"`
+	To   string `json:"to"`
+}
+
 type Configuration struct {
-	Autor    string    `json:"author"`
-	Title    string    `json:"title"`
-	Montages []Montage `json:"montages"`
-	Files    []string  `json:"files"`
-	Double   bool      `json:"double"` // when double compilation is required
+	Autor        string        `json:"author"`
+	Title        string        `json:"title"`
+	Montages     []Montage     `json:"montages"`
+	Files        []string      `json:"files"`
+	Replacements []Replacement `json:"replacements"`
+	Double       bool          `json:"double"` // when double compilation is required
 }
 
 func (configuration *Configuration) load() {
