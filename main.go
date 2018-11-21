@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	version = "0.1.1"
+	version = "0.1.2"
 	bullet  = "⮞"
 )
 
@@ -17,7 +17,6 @@ var (
 	basedir       string
 	configuration Configuration
 	reference     string // name or id of used montage
-	nosanitize    bool
 	tag           bool
 	nocontent     bool
 	verbose       bool
@@ -31,7 +30,6 @@ func main() {
 	flag.StringVar(&jsonPath, "f", "./litt.json", "configuration `file`")
 	flag.StringVar(&reference, "m", "1", "create `montage`")
 	flag.BoolVar(&nocontent, "b", false, "don't build content")
-	flag.BoolVar(&nosanitize, "s", false, "don't sanitize files before assembling")
 	flag.BoolVar(&tag, "t", false, "tag final PDF with montage name and timestamp")
 	flag.BoolVar(&verbose, "v", false, "be verbose")
 	flag.Usage = usage

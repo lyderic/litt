@@ -15,9 +15,7 @@ import (
 func assemble() {
 	montage := getSelectedMontage()
 	fmt.Printf("Assembling montage %q\n", montage.Name)
-	if !nosanitize {
-		sanitizeAllFiles()
-	}
+	sanitizeAllFiles()
 	if !nocontent {
 		buildContent(montage)
 	}
