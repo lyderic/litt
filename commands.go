@@ -13,6 +13,7 @@ var commands = []Command{
 	{"a", "assemble", "assemble montage", assemble},
 	{"l", "list", "list montages", list},
 	{"n", "count", "count characters, bytes and words", count},
+	{"t", "totals", "count totals", totals},
 	{"c", "clean", "cleanup", clean},
 	{"d", "dump", "dump configuration", dump},
 }

@@ -1,5 +1,3 @@
-/* TODO: add possibility to display only totals */
-
 package main
 
 import (
