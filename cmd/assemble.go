@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -33,16 +34,25 @@ func assemble() {
 	montage := getSelectedMontage()
 	fmt.Printf("Assembling montage %q\n", montage.Name)
 	sanitizeAllFiles()
-	if !viper.GetBool("noc") {
-		buildContent(montage)
-	}
+	buildContent(montage)
 	buildpdf(montage)
 }
 
 func buildContent(montage Montage) {
-	fmt.Println("Building content")
 	montageDir := getMontageDir(montage)
 	contentFile := filepath.Join(montageDir, "content.tex")
+	contentExists := true
+	if _, err := os.Stat(contentFile); os.IsNotExist(err) {
+		contentExists = false
+	}
+	if viper.GetBool("noc") && contentExists {
+		tools.PrintYellowln("content.tex found, not regenerated as requested.")
+		return
+	}
+	if viper.GetBool("noc") && !contentExists {
+		tools.PrintYellowln("Not regenerated content as been requested, however content.tex was not found...")
+	}
+	fmt.Println("Building content")
 	fmt.Println(BULLET, "creating content.tex with pandoc")
 	var args []string
 	args = append(args, "-o")
@@ -103,7 +113,7 @@ func init() {
 	rootCmd.AddCommand(assembleCmd)
 	assembleCmd.Flags().StringP("montage", "m", "1", "use this montage")
 	viper.BindPFlag("reference", assembleCmd.Flags().Lookup("montage"))
-	assembleCmd.Flags().BoolP("no-content", "n", false, "don't (re)build content")
+	assembleCmd.Flags().BoolP("no-content", "n", false, "don't regenerate content if content.tex already exists")
 	viper.BindPFlag("noc", assembleCmd.Flags().Lookup("no-content"))
 	assembleCmd.Flags().BoolP("tag", "t", false, "tag final PDF with montage name and timestamp")
 	viper.BindPFlag("tag", assembleCmd.Flags().Lookup("tag"))
