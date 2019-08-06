@@ -13,3 +13,7 @@
 
 # vim swaps
 *.swp
+
+# no need to version control completion script
+# as it can be generated at will
+*.completion

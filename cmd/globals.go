@@ -1,8 +1,9 @@
 package cmd
 
 const (
-	VERSION = "0.3.3"
-	BULLET  = "⮞"
+	VERSION  = "0.3.4"
+	PROGNAME = "litt"
+	BULLET   = "⮞"
 )
 
 var (
