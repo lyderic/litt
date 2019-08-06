@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"bytes"
@@ -10,7 +10,16 @@ import (
 
 	"github.com/lyderic/tools"
 	"github.com/olekukonko/tablewriter"
+	"github.com/spf13/cobra"
 )
+
+var countCmd = &cobra.Command{
+	Use:   "count",
+	Short: "Count characters, bytes and words",
+	Run: func(cmd *cobra.Command, args []string) {
+		count()
+	},
+}
 
 type Item struct {
 	Name  string
@@ -85,4 +94,8 @@ func getTotals(items []Item) Item {
 	totals.Words = w
 	totals.Bytes = b
 	return totals
+}
+
+func init() {
+	rootCmd.AddCommand(countCmd)
 }

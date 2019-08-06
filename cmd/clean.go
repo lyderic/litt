@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -9,7 +9,16 @@ import (
 	"strings"
 
 	"github.com/lyderic/tools"
+	"github.com/spf13/cobra"
 )
+
+var cleanCmd = &cobra.Command{
+	Use:   "clean",
+	Short: "clean configuration (for debugging)",
+	Run: func(cmd *cobra.Command, args []string) {
+		clean()
+	},
+}
 
 var extensionsToClean = []string{".aux", ".log", ".out", ".html",
 	".bbl", ".blg", ".dvi", ".idv", ".lg", ".tmp", ".toc", ".xref",
@@ -37,11 +46,15 @@ func cleanDir(dir string) (n int) {
 		path := filepath.Join(dir, name)
 		for _, extension := range extensionsToClean {
 			if strings.HasSuffix(name, extension) {
-				fmt.Println(bullet, path)
+				fmt.Println(BULLET, path)
 				os.Remove(path)
 				n++
 			}
 		}
 	}
 	return
+}
+
+func init() {
+	rootCmd.AddCommand(cleanCmd)
 }

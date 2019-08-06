@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"bytes"
@@ -10,7 +10,17 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/spf13/cobra"
 )
+
+var assembleCmd = &cobra.Command{
+	Use:   "assemble",
+	Short: "Assemble montage",
+	Run: func(cmd *cobra.Command, args []string) {
+		assemble()
+	},
+}
 
 func assemble() {
 	montage := getSelectedMontage()
@@ -26,7 +36,7 @@ func buildContent(montage Montage) {
 	fmt.Println("Building content")
 	montageDir := getMontageDir(montage)
 	contentFile := filepath.Join(montageDir, "content.tex")
-	fmt.Println(bullet, "creating content.tex with pandoc")
+	fmt.Println(BULLET, "creating content.tex with pandoc")
 	var args []string
 	args = append(args, "-o")
 	args = append(args, contentFile)
@@ -40,7 +50,7 @@ func buildContent(montage Montage) {
 		log.Fatal(err)
 	}
 	for _, replacement := range configuration.Replacements {
-		fmt.Printf("%s replacing %q -> %q\n", bullet, replacement.From, replacement.To)
+		fmt.Printf("%s replacing %q -> %q\n", BULLET, replacement.From, replacement.To)
 		input, err := ioutil.ReadFile(contentFile)
 		if err != nil {
 			log.Fatal(err)
@@ -62,17 +72,17 @@ func buildpdf(montage Montage) {
 	if configuration.Double {
 		pdflatex(montageTexName)
 	}
-	pdfName := fmt.Sprintf("%s - %s.pdf", configuration.Title, configuration.Autor)
+	pdfName := fmt.Sprintf("%s - %s.pdf", configuration.Title, configuration.Author)
 	if tag {
-		pdfName = fmt.Sprintf("%s - %s [%s-%s].pdf", configuration.Title, configuration.Autor, montage.Name, time.Now().Format("20060102150405"))
+		pdfName = fmt.Sprintf("%s - %s [%s-%s].pdf", configuration.Title, configuration.Author, montage.Name, time.Now().Format("20060102150405"))
 	}
 	pdfFullPath := filepath.Join(basedir, pdfName)
 	os.Rename(montagePdfName, pdfFullPath)
-	fmt.Printf("%s created %q\n", bullet, pdfFullPath)
+	fmt.Printf("%s created %q\n", BULLET, pdfFullPath)
 }
 
 func pdflatex(tex string) {
-	fmt.Printf("%s running pdflatex on %q\n", bullet, tex)
+	fmt.Printf("%s running pdflatex on %q\n", BULLET, tex)
 	cmd := exec.Command("pdflatex", tex)
 	if verbose {
 		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
@@ -80,4 +90,11 @@ func pdflatex(tex string) {
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func init() {
+	rootCmd.AddCommand(assembleCmd)
+	assembleCmd.Flags().StringVarP(&reference, "montage", "m", "1", "create montage")
+	assembleCmd.Flags().BoolVarP(&nocontent, "no-content", "n", false, "don't (re)build content")
+	assembleCmd.Flags().BoolVarP(&tag, "tag", "t", false, "tag final PDF with montage name and timestamp")
 }

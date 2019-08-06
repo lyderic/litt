@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -9,7 +9,16 @@ import (
 	"unicode/utf8"
 
 	"github.com/lyderic/tools"
+	"github.com/spf13/cobra"
 )
+
+var totalsCmd = &cobra.Command{
+	Use:   "totals",
+	Short: "Count totals",
+	Run: func(cmd *cobra.Command, args []string) {
+		totals()
+	},
+}
 
 func totals() {
 	var err error
@@ -29,7 +38,11 @@ func totals() {
 		words = words + len(strings.Fields(content))
 	}
 	fmt.Println("Count Totals:")
-	fmt.Printf("%s Chars: %9.9s\n", bullet, tools.ThousandSeparator(chars))
-	fmt.Printf("%s Bytes: %9.9s\n", bullet, tools.ThousandSeparator(bytes))
-	fmt.Printf("%s Words: %9.9s\n", bullet, tools.ThousandSeparator(words))
+	fmt.Printf("%s Chars: %9.9s\n", BULLET, tools.ThousandSeparator(chars))
+	fmt.Printf("%s Bytes: %9.9s\n", BULLET, tools.ThousandSeparator(bytes))
+	fmt.Printf("%s Words: %9.9s\n", BULLET, tools.ThousandSeparator(words))
+}
+
+func init() {
+	rootCmd.AddCommand(totalsCmd)
 }

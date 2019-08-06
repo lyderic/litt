@@ -1,8 +1,23 @@
-package main
+package cmd
 
-import "fmt"
+import (
+	"fmt"
 
-func list() {
+	"github.com/spf13/cobra"
+)
+
+var listCmd = &cobra.Command{
+	Use:   "list",
+	Short: "list montages",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return list()
+	},
+}
+
+func list() error {
+	if len(configuration.Montages) == 0 {
+		return fmt.Errorf("No montage found!")
+	}
 	// what is the longest name?
 	ln := 0
 	for _, montage := range configuration.Montages {
@@ -20,4 +35,9 @@ func list() {
 			fmt.Println()
 		}
 	}
+	return nil
+}
+
+func init() {
+	rootCmd.AddCommand(listCmd)
 }

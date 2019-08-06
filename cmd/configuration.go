@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"encoding/json"
@@ -25,7 +25,7 @@ type Replacement struct {
 }
 
 type Configuration struct {
-	Autor        string        `json:"author"`
+	Author       string        `json:"author"`
 	Title        string        `json:"title"`
 	Montages     []Montage     `json:"montages"`
 	Files        []string      `json:"files"`
