@@ -18,11 +18,9 @@ var dumpCmd = &cobra.Command{
 func dump() {
 	fmt.Println("*** VIPER ***")
 	fmt.Printf("%#v\n", viper.AllSettings())
-	fmt.Println("*** CONFIGURATION ***")
-	fmt.Printf("%#v\n", configuration)
 	fmt.Println("*** GLOBALS VARIABLES ***")
-	fmt.Println("cfgFile:", cfgFile)
-	fmt.Println("verbose:", verbose)
+	fmt.Printf("cfgFile: %#v\n", cfgFile)
+	fmt.Printf("%#v\n", configuration)
 }
 
 func init() {

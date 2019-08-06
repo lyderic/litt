@@ -1,12 +1,11 @@
 package cmd
 
 const (
-	VERSION = "0.3.1"
+	VERSION = "0.3.2"
 	BULLET  = "⮞"
 )
 
 var (
 	cfgFile       string
 	configuration Configuration
-	verbose       bool
 )

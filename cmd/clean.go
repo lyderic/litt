@@ -15,7 +15,7 @@ import (
 
 var cleanCmd = &cobra.Command{
 	Use:   "clean",
-	Short: "clean configuration (for debugging)",
+	Short: "Clean configuration (for debugging)",
 	Run: func(cmd *cobra.Command, args []string) {
 		clean()
 	},

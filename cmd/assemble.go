@@ -85,7 +85,7 @@ func buildpdf(montage Montage) {
 func pdflatex(tex string) {
 	fmt.Printf("%s running pdflatex on %q\n", BULLET, tex)
 	cmd := exec.Command("pdflatex", tex)
-	if verbose {
+	if viper.GetBool("verbose") {
 		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	}
 	if err := cmd.Run(); err != nil {
@@ -101,5 +101,6 @@ func init() {
 	viper.BindPFlag("noc", assembleCmd.Flags().Lookup("no-content"))
 	assembleCmd.Flags().BoolP("tag", "t", false, "tag final PDF with montage name and timestamp")
 	viper.BindPFlag("tag", assembleCmd.Flags().Lookup("tag"))
-
+	assembleCmd.Flags().BoolP("verbose", "v", false, "be verbose: show pdflatex output")
+	viper.BindPFlag("verbose", assembleCmd.Flags().Lookup("verbose"))
 }

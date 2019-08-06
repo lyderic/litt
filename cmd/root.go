@@ -27,7 +27,6 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "litt.json", "configuration `file`")
-	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "be verbose")
 }
 
 func initConfig() {
