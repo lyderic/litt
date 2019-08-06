@@ -1,12 +1,12 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/spf13/viper"
 )
 
 type Montage struct {
@@ -33,6 +33,7 @@ type Configuration struct {
 	Double       bool          `json:"double"` // when double compilation is required
 }
 
+/*
 func (configuration *Configuration) load() {
 	var err error
 	var file *os.File
@@ -49,18 +50,19 @@ func (configuration *Configuration) load() {
 	}
 	checkConfiguration(configuration)
 }
+*/
 
 func checkConfiguration(configuration *Configuration) {
 	for _, file := range configuration.Files {
-		path := filepath.Join(basedir, file)
+		path := filepath.Join(viper.GetString("basedir"), file)
 		if _, err := os.Stat(path); os.IsNotExist(err) {
-			log.Fatalf("Error in configuration file: %q\nFile listed not found on disk: %q\n", jsonPath, path)
+			log.Fatalf("Error in configuration file: %q\nFile listed not found on disk: %q\n", viper.ConfigFileUsed(), path)
 		}
 	}
 	for _, montage := range configuration.Montages {
-		path := filepath.Join(basedir, montage.Path)
+		path := filepath.Join(viper.GetString("basedir"), montage.Path)
 		if _, err := os.Stat(path); os.IsNotExist(err) {
-			log.Fatalf("Error in configuration file: %q\nMontage listed not found on disk: %+v\nFile not found: %q\n", jsonPath, montage, path)
+			log.Fatalf("Error in configuration file: %q\nMontage listed not found on disk: %+v\nFile not found: %q\n", viper.ConfigFileUsed(), montage, path)
 		}
 	}
 }

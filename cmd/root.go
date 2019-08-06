@@ -40,8 +40,7 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(err)
 	}
-	jsonPath = viper.ConfigFileUsed()
-	basedir = getParent(jsonPath)
+	viper.Set("basedir", getAbsoluteParent(viper.ConfigFileUsed()))
 	err := viper.Unmarshal(&configuration)
 	if err != nil {
 		panic(err)

@@ -10,6 +10,7 @@ import (
 
 	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var totalsCmd = &cobra.Command{
@@ -24,7 +25,7 @@ func totals() {
 	var err error
 	bytes, chars, words := 0, 0, 0
 	for _, file := range configuration.Files {
-		path := filepath.Join(basedir, file)
+		path := filepath.Join(viper.GetString("basedir"), file)
 		var bb []byte
 		if bb, err = ioutil.ReadFile(path); err != nil {
 			return

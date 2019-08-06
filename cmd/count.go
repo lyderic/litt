@@ -11,6 +11,7 @@ import (
 	"github.com/lyderic/tools"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var countCmd = &cobra.Command{
@@ -32,7 +33,7 @@ func count() {
 	var err error
 	var items []Item
 	for _, file := range configuration.Files {
-		path := filepath.Join(basedir, file)
+		path := filepath.Join(viper.GetString("basedir"), file)
 		item := Item{}
 		item.Name = filepath.Base(path)
 		var bb []byte

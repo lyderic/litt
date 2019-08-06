@@ -13,7 +13,7 @@ func oldmain() {
 			usage()
 			log.Fatal(err)
 		}
-		basedir = getParent(jsonPath)
+		viper.GetString("basedir") = getAbsoluteParent(jsonPath)
 		configuration.load()
 		if len(flag.Args()) == 0 {
 			usage()

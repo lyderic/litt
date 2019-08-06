@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/lyderic/tools"
+	"github.com/spf13/viper"
 )
 
 func sanitizeAllFiles() {
@@ -12,7 +13,7 @@ func sanitizeAllFiles() {
 	var idx int
 	var file string
 	for idx, file = range configuration.Files {
-		path := filepath.Join(basedir, file)
+		path := filepath.Join(viper.GetString("basedir"), file)
 		tools.Sanitize(path, true)
 	}
 	n := idx + 1

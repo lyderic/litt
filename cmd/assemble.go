@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var assembleCmd = &cobra.Command{
@@ -26,7 +27,7 @@ func assemble() {
 	montage := getSelectedMontage()
 	fmt.Printf("Assembling montage %q\n", montage.Name)
 	sanitizeAllFiles()
-	if !nocontent {
+	if !viper.GetBool("noc") {
 		buildContent(montage)
 	}
 	buildpdf(montage)
@@ -41,7 +42,7 @@ func buildContent(montage Montage) {
 	args = append(args, "-o")
 	args = append(args, contentFile)
 	for _, file := range configuration.Files {
-		args = append(args, filepath.Join(basedir, file))
+		args = append(args, filepath.Join(viper.GetString("basedir"), file))
 	}
 	cmd := exec.Command("pandoc", args...)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
@@ -73,10 +74,10 @@ func buildpdf(montage Montage) {
 		pdflatex(montageTexName)
 	}
 	pdfName := fmt.Sprintf("%s - %s.pdf", configuration.Title, configuration.Author)
-	if tag {
+	if viper.GetBool("tag") {
 		pdfName = fmt.Sprintf("%s - %s [%s-%s].pdf", configuration.Title, configuration.Author, montage.Name, time.Now().Format("20060102150405"))
 	}
-	pdfFullPath := filepath.Join(basedir, pdfName)
+	pdfFullPath := filepath.Join(viper.GetString("basedir"), pdfName)
 	os.Rename(montagePdfName, pdfFullPath)
 	fmt.Printf("%s created %q\n", BULLET, pdfFullPath)
 }
@@ -94,7 +95,11 @@ func pdflatex(tex string) {
 
 func init() {
 	rootCmd.AddCommand(assembleCmd)
-	assembleCmd.Flags().StringVarP(&reference, "montage", "m", "1", "create montage")
-	assembleCmd.Flags().BoolVarP(&nocontent, "no-content", "n", false, "don't (re)build content")
-	assembleCmd.Flags().BoolVarP(&tag, "tag", "t", false, "tag final PDF with montage name and timestamp")
+	assembleCmd.Flags().StringP("montage", "m", "1", "create montage")
+	viper.BindPFlag("reference", assembleCmd.Flags().Lookup("montage"))
+	assembleCmd.Flags().BoolP("no-content", "n", false, "don't (re)build content")
+	viper.BindPFlag("noc", assembleCmd.Flags().Lookup("no-content"))
+	assembleCmd.Flags().BoolP("tag", "t", false, "tag final PDF with montage name and timestamp")
+	viper.BindPFlag("tag", assembleCmd.Flags().Lookup("tag"))
+
 }

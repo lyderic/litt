@@ -22,11 +22,6 @@ func dump() {
 	fmt.Printf("%#v\n", configuration)
 	fmt.Println("*** GLOBALS VARIABLES ***")
 	fmt.Println("cfgFile:", cfgFile)
-	fmt.Println("jsonPath:", jsonPath)
-	fmt.Println("basedir:", basedir)
-	fmt.Println("reference:", reference)
-	fmt.Println("tag:", tag)
-	fmt.Println("nocontent:", nocontent)
 	fmt.Println("verbose:", verbose)
 }
 

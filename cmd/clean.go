@@ -10,6 +10,7 @@ import (
 
 	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var cleanCmd = &cobra.Command{
@@ -28,7 +29,7 @@ func clean() {
 	for _, montage := range configuration.Montages {
 		fmt.Printf("Cleaning montage %q\n", montage.Name)
 		a := cleanDir(getMontageDir(montage))
-		b := cleanDir(basedir)
+		b := cleanDir(viper.GetString("basedir"))
 		n := a + b
 		fmt.Printf("%d file%s removed\n", n, tools.Ternary(n > 1, "s", ""))
 	}
