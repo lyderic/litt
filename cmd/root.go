@@ -24,18 +24,17 @@ func Execute() {
 	}
 }
 
+var (
+	config = "./litt.json" // default config file
+)
+
 func init() {
+	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", config, "configuration `file`")
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "litt.json", "configuration `file`")
 }
 
 func initConfig() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
-	} else {
-		viper.AddConfigPath(".")
-		viper.SetConfigName("litt")
-	}
+	viper.SetConfigFile(config)
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(err)
 	}

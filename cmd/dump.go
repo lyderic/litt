@@ -19,7 +19,6 @@ func dump() {
 	fmt.Println("*** VIPER ***")
 	fmt.Printf("%#v\n", viper.AllSettings())
 	fmt.Println("*** GLOBALS VARIABLES ***")
-	fmt.Printf("cfgFile: %#v\n", cfgFile)
 	fmt.Printf("%#v\n", configuration)
 }
 
