@@ -16,8 +16,9 @@ import (
 )
 
 var assembleCmd = &cobra.Command{
-	Use:   "assemble",
-	Short: "Assemble montage",
+	Use:     "assemble",
+	Aliases: []string{"a", "ass"},
+	Short:   "Assemble montage",
 	Run: func(cmd *cobra.Command, args []string) {
 		assemble()
 	},
@@ -95,7 +96,7 @@ func pdflatex(tex string) {
 
 func init() {
 	rootCmd.AddCommand(assembleCmd)
-	assembleCmd.Flags().StringP("montage", "m", "1", "create montage")
+	assembleCmd.Flags().StringP("montage", "m", "1", "use this montage")
 	viper.BindPFlag("reference", assembleCmd.Flags().Lookup("montage"))
 	assembleCmd.Flags().BoolP("no-content", "n", false, "don't (re)build content")
 	viper.BindPFlag("noc", assembleCmd.Flags().Lookup("no-content"))

@@ -14,8 +14,9 @@ import (
 )
 
 var totalsCmd = &cobra.Command{
-	Use:   "totals",
-	Short: "Count totals",
+	Use:     "totals",
+	Aliases: []string{"t", "tot"},
+	Short:   "Count totals",
 	Run: func(cmd *cobra.Command, args []string) {
 		totals()
 	},
