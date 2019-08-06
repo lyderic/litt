@@ -19,6 +19,11 @@ var assembleCmd = &cobra.Command{
 	Use:     "assemble",
 	Aliases: []string{"a", "ass"},
 	Short:   "Assemble montage",
+	Long: `
+Assemble montage.
+
+If no montage is specified, the default montage ("1") is used.
+If --no-content is given, "content.tex" is not generated.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		assemble()
 	},

@@ -8,7 +8,7 @@ import (
 
 var initializeCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize a new project, creating a minimal litt.json",
+	Short: fmt.Sprintf("Initialize a new project, creating a minimal %s.json", PROGNAME),
 	Run: func(cmd *cobra.Command, args []string) {
 		initialize()
 	},

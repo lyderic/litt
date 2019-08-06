@@ -5,8 +5,9 @@ import (
 )
 
 var completionCmd = &cobra.Command{
-	Use:   "completion",
-	Short: "Generate bash completion script",
+	Use:                   "completion",
+	Short:                 "Generate bash completion script",
+	DisableFlagsInUseLine: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return completion()
 	},

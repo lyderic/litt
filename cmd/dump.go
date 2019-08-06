@@ -8,8 +8,9 @@ import (
 )
 
 var dumpCmd = &cobra.Command{
-	Use:   "dump",
-	Short: "Dump configuration (for debugging)",
+	Use:                   "dump",
+	Short:                 "Dump configuration (for debugging)",
+	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		dump()
 	},

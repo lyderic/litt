@@ -38,7 +38,7 @@ func getSelectedMontage() (montage Montage) {
 		}
 	}
 	if !found {
-		log.Fatalf("%s: montage not found! Try: 'litt list'\n", viper.GetString("reference"))
+		log.Fatalf("%s: montage not found! Try: '%s list'\n", viper.GetString("reference"), PROGNAME)
 	}
 	return
 }

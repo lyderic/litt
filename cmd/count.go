@@ -15,9 +15,10 @@ import (
 )
 
 var countCmd = &cobra.Command{
-	Use:     "count",
-	Aliases: []string{"n"},
-	Short:   "Count characters, bytes and words",
+	Use:                   "count",
+	Aliases:               []string{"n"},
+	DisableFlagsInUseLine: true,
+	Short:                 "Count characters, bytes and words",
 	Run: func(cmd *cobra.Command, args []string) {
 		count()
 	},

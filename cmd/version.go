@@ -9,6 +9,9 @@ import (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Show version",
+	Long: `
+Show version`,
+	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		version()
 	},

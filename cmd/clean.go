@@ -14,9 +14,10 @@ import (
 )
 
 var cleanCmd = &cobra.Command{
-	Use:     "clean",
-	Aliases: []string{"c", "clear"},
-	Short:   "Clean configuration (for debugging)",
+	Use:                   "clean",
+	Aliases:               []string{"c", "clear"},
+	DisableFlagsInUseLine: true,
+	Short:                 "Clean configuration (for debugging)",
 	Run: func(cmd *cobra.Command, args []string) {
 		clean()
 	},

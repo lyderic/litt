@@ -9,9 +9,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "litt",
+	Use:   PROGNAME,
 	Short: "Application to generate books from Markdown files",
-	Long: `litt generates PDFs ready to print on KDP or similar
+	Long: `This program generates PDFs ready to print on KDP or similar
 platforms, or manuscripts.
 
 It depends on 'pandoc' and 'pdflatex' being installed on the
@@ -25,7 +25,7 @@ func Execute() {
 }
 
 var (
-	config = "./litt.json" // default config file
+	config = "./" + PROGNAME + ".json" // default config file
 )
 
 func init() {
