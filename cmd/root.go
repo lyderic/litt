@@ -24,6 +24,18 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", config, "configuration `file`")
+	commandsNeedingConfiguration := []*cobra.Command{
+		assembleCmd,
+		cleanCmd,
+		countCmd,
+		listCmd,
+		totalsCmd,
+	}
+	for _, command := range commandsNeedingConfiguration {
+		command.PreRun = func(cmd *cobra.Command, args []string) {
+			configuration.load()
+		}
+	}
 }
 
 /*

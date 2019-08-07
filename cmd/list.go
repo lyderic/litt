@@ -18,7 +18,6 @@ var listCmd = &cobra.Command{
 }
 
 func list() {
-	configuration.load()
 	if len(configuration.Montages) == 0 {
 		tools.PrintRedln("No montage found!")
 	}

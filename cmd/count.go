@@ -32,7 +32,6 @@ type Item struct {
 }
 
 func count() {
-	configuration.load()
 	var err error
 	var items []Item
 	for _, file := range configuration.Files {
