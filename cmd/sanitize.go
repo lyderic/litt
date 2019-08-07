@@ -17,5 +17,5 @@ func sanitizeAllFiles() {
 		tools.Sanitize(path, true)
 	}
 	n := idx + 1
-	fmt.Printf("%s %d file%s processed\n", BULLET, n, tools.Ternary(n > 1, "s", ""))
+	fmt.Printf("%s %d file%s processed\n", tools.PROMPT, n, tools.Ternary(n > 1, "s", ""))
 }

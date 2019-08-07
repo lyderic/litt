@@ -53,7 +53,7 @@ func buildContent(montage Montage) {
 		tools.PrintYellowln("Not regenerated content as been requested, however content.tex was not found...")
 	}
 	fmt.Println("Building content")
-	fmt.Println(BULLET, "creating content.tex with pandoc")
+	fmt.Println(tools.PROMPT, "creating content.tex with pandoc")
 	var args []string
 	args = append(args, "-o")
 	args = append(args, contentFile)
@@ -67,7 +67,7 @@ func buildContent(montage Montage) {
 		log.Fatal(err)
 	}
 	for _, replacement := range configuration.Replacements {
-		fmt.Printf("%s replacing %q -> %q\n", BULLET, replacement.From, replacement.To)
+		fmt.Printf("%s replacing %q -> %q\n", tools.PROMPT, replacement.From, replacement.To)
 		input, err := ioutil.ReadFile(contentFile)
 		if err != nil {
 			log.Fatal(err)
@@ -95,11 +95,11 @@ func buildpdf(montage Montage) {
 	}
 	pdfFullPath := filepath.Join(viper.GetString("basedir"), pdfName)
 	os.Rename(montagePdfName, pdfFullPath)
-	fmt.Printf("%s created %q\n", BULLET, pdfFullPath)
+	fmt.Printf("%s created %q\n", tools.PROMPT, pdfFullPath)
 }
 
 func pdflatex(tex string) {
-	fmt.Printf("%s running pdflatex on %q\n", BULLET, tex)
+	fmt.Printf("%s running pdflatex on %q\n", tools.PROMPT, tex)
 	cmd := exec.Command("pdflatex", tex)
 	if viper.GetBool("verbose") {
 		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr

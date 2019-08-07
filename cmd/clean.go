@@ -49,7 +49,7 @@ func cleanDir(dir string) (n int) {
 		path := filepath.Join(dir, name)
 		for _, extension := range extensionsToClean {
 			if strings.HasSuffix(name, extension) {
-				fmt.Println(BULLET, path)
+				fmt.Println(tools.PROMPT, path)
 				os.Remove(path)
 				n++
 			}

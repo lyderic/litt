@@ -41,9 +41,9 @@ func totals() {
 		words = words + len(strings.Fields(content))
 	}
 	fmt.Println("Count Totals:")
-	fmt.Printf("%s Chars: %9.9s\n", BULLET, tools.ThousandSeparator(chars))
-	fmt.Printf("%s Bytes: %9.9s\n", BULLET, tools.ThousandSeparator(bytes))
-	fmt.Printf("%s Words: %9.9s\n", BULLET, tools.ThousandSeparator(words))
+	fmt.Printf("%s Chars: %9.9s\n", tools.PROMPT, tools.ThousandSeparator(chars))
+	fmt.Printf("%s Bytes: %9.9s\n", tools.PROMPT, tools.ThousandSeparator(bytes))
+	fmt.Printf("%s Words: %9.9s\n", tools.PROMPT, tools.ThousandSeparator(words))
 }
 
 func init() {
