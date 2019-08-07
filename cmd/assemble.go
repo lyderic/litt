@@ -31,6 +31,7 @@ If --no-content is given, "content.tex" is not generated.`,
 }
 
 func assemble() {
+	configuration.load()
 	montage := getSelectedMontage()
 	fmt.Printf("Assembling montage %q\n", montage.Name)
 	sanitizeAllFiles()

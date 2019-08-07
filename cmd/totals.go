@@ -24,6 +24,7 @@ var totalsCmd = &cobra.Command{
 }
 
 func totals() {
+	configuration.load()
 	var err error
 	bytes, chars, words := 0, 0, 0
 	for _, file := range configuration.Files {

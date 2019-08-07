@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/lyderic/tools"
 	"github.com/spf13/viper"
 )
 
@@ -33,36 +33,38 @@ type Configuration struct {
 	Double       bool          `json:"double"` // when double compilation is required
 }
 
-/*
 func (configuration *Configuration) load() {
-	var err error
-	var file *os.File
-	if file, err = os.Open(jsonPath); err != nil {
-		log.Fatal(err)
+	if !tools.PathExists(config) {
+		tools.PrintRedf("%q: configuration file not found!\n", config)
+		os.Exit(CONFIG_FILE_NOT_FOUND)
 	}
-	defer file.Close()
-	var content []byte
-	if content, err = ioutil.ReadAll(file); err != nil {
-		log.Fatal(err)
+	viper.SetConfigFile(config)
+	if err := viper.ReadInConfig(); err != nil {
+		tools.PrintRedf("%q: cannot load configuration!\n", config)
+		os.Exit(CONFIG_FILE_NOT_LOADABLE)
 	}
-	if err = json.Unmarshal(content, &configuration); err != nil {
-		log.Fatalf("failed to parse configuration: %s\n ⮞ %v", jsonPath, err)
+	viper.Set("basedir", getAbsoluteParent(viper.ConfigFileUsed()))
+	err := viper.Unmarshal(&configuration)
+	if err != nil {
+		tools.PrintRedf("%q: invalid configuration file!\n", config)
+		os.Exit(INVALID_CONFIG_FILE)
 	}
-	checkConfiguration(configuration)
+	configuration.check()
 }
-*/
 
-func checkConfiguration(configuration *Configuration) {
+func (configuration *Configuration) check() {
 	for _, file := range configuration.Files {
 		path := filepath.Join(viper.GetString("basedir"), file)
 		if _, err := os.Stat(path); os.IsNotExist(err) {
-			log.Fatalf("Error in configuration file: %q\nFile listed not found on disk: %q\n", viper.ConfigFileUsed(), path)
+			tools.PrintRedf("Error in configuration file: %q\nListed file not found on disk: %q\n", viper.ConfigFileUsed(), path)
+			os.Exit(LISTED_FILE_NOT_FOUND)
 		}
 	}
 	for _, montage := range configuration.Montages {
 		path := filepath.Join(viper.GetString("basedir"), montage.Path)
 		if _, err := os.Stat(path); os.IsNotExist(err) {
-			log.Fatalf("Error in configuration file: %q\nMontage listed not found on disk: %+v\nFile not found: %q\n", viper.ConfigFileUsed(), montage, path)
+			tools.PrintRedf("Error in configuration file: %q\nListed montage not found on disk: %+v\nFile not found: %q\n", viper.ConfigFileUsed(), montage, path)
+			os.Exit(LISTED_MONTAGE_NOT_FOUND)
 		}
 	}
 }

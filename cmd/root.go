@@ -4,8 +4,6 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-
-	"github.com/spf13/viper"
 )
 
 var rootCmd = &cobra.Command{
@@ -24,19 +22,20 @@ func Execute() {
 	}
 }
 
-var (
-	config = "./" + PROGNAME + ".json" // default config file
-)
-
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", config, "configuration `file`")
-	cobra.OnInitialize(initConfig)
 }
 
+/*
 func initConfig() {
+	if !tools.PathExists(config) {
+		tools.PrintRedf("%s: configuration file not found!", config)
+		return
+	}
 	viper.SetConfigFile(config)
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
+		tools.PrintRedln("Configuration file not readable!")
+		log.Fatalf("Aborting")
 	}
 	viper.Set("basedir", getAbsoluteParent(viper.ConfigFileUsed()))
 	err := viper.Unmarshal(&configuration)
@@ -44,3 +43,4 @@ func initConfig() {
 		panic(err)
 	}
 }
+*/

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -11,14 +12,15 @@ var listCmd = &cobra.Command{
 	Aliases:               []string{"ls", "l"},
 	DisableFlagsInUseLine: true,
 	Short:                 "List montages",
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return list()
+	Run: func(cmd *cobra.Command, args []string) {
+		list()
 	},
 }
 
-func list() error {
+func list() {
+	configuration.load()
 	if len(configuration.Montages) == 0 {
-		return fmt.Errorf("No montage found!")
+		tools.PrintRedln("No montage found!")
 	}
 	// what is the longest name?
 	ln := 0
@@ -37,7 +39,7 @@ func list() error {
 			fmt.Println()
 		}
 	}
-	return nil
+	return
 }
 
 func init() {

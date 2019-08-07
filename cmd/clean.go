@@ -28,6 +28,7 @@ var extensionsToClean = []string{".aux", ".log", ".out", ".html",
 	".4ct", ".4tc", ".rtf", ".pdf", ".epub"}
 
 func clean() {
+	configuration.load()
 	for _, montage := range configuration.Montages {
 		fmt.Printf("Cleaning montage %q\n", montage.Name)
 		a := cleanDir(getMontageDir(montage))
