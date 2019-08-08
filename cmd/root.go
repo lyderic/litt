@@ -27,6 +27,14 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&config, "config", "c", config, "configuration `file`")
+	/*
+		BETTER: no need for global 'config' variable + 'config' should not be persistent anyway
+
+		rootCmd.Flags().StringVarP("config", "c", config, "configuration `file`")
+		viper.BindPFlag("config", rootCmd.Flags().Lookup("config"))
+		viper.SetEnvPrefix(strings.ToUpper(PROGNAME))
+		viper.AutomaticEnv() // config can now be set with envvar 'LITT_CONFIG'
+	*/
 	commandsNeedingConfiguration := []*cobra.Command{
 		assembleCmd,
 		cleanCmd,
