@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -9,11 +10,13 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   PROGNAME,
 	Short: "Application to generate books from Markdown files",
-	Long: `This program generates PDFs ready to print on KDP or similar
+	Long: fmt.Sprintf(`%s (c) Lyderic Landry, London 2019
+
+This program generates PDFs ready to print on KDP or similar
 platforms, or manuscripts.
 
 It depends on 'pandoc' and 'pdflatex' being installed on the
-computer it is running on.`,
+computer it is running on.`, PROGNAME),
 }
 
 func Execute() {
