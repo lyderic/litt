@@ -33,5 +33,5 @@ func init() {
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.SetEnvPrefix(strings.ToUpper(PROGNAME))
 	viper.AutomaticEnv() // config file can now be set with envvar 'LITT_CONFIG'
-	viper.Set("basedir", getAbsoluteParent(config))
+	viper.Set("basedir", getAbsoluteParent(viper.GetString("config")))
 }

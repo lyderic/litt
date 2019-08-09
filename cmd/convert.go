@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -22,8 +21,7 @@ var convertCmd = &cobra.Command{
 
 func convert() {
 	configuration.load()
-	yamlfile := strings.Replace(viper.GetString("config"), "json", "yaml", 1)
-	yamlpath := filepath.Join(viper.GetString("basedir"), yamlfile)
+	yamlpath := strings.Replace(viper.GetString("config"), "json", "yaml", 1)
 	var err error
 	var data []byte
 	if data, err = yaml.Marshal(&configuration); err != nil {
