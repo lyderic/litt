@@ -12,6 +12,9 @@ var listCmd = &cobra.Command{
 	Aliases:               []string{"ls", "l"},
 	DisableFlagsInUseLine: true,
 	Short:                 "List montages",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		configuration.load()
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		list()
 	},

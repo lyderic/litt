@@ -18,6 +18,9 @@ var totalsCmd = &cobra.Command{
 	Aliases:               []string{"t", "tot"},
 	DisableFlagsInUseLine: true,
 	Short:                 "Count totals",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		configuration.load()
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		totals()
 	},

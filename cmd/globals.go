@@ -1,7 +1,7 @@
 package cmd
 
 const (
-	VERSION                  = "0.4.4"
+	VERSION                  = "0.4.5"
 	PROGNAME                 = "litt"
 	CONFIG_FILE_NOT_FOUND    = 2
 	CONFIG_FILE_NOT_LOADABLE = 4
@@ -11,6 +11,5 @@ const (
 )
 
 var (
-	config        = "./" + PROGNAME + ".json" // default config file
 	configuration Configuration
 )

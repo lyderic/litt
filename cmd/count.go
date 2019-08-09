@@ -19,6 +19,9 @@ var countCmd = &cobra.Command{
 	Aliases:               []string{"n"},
 	DisableFlagsInUseLine: true,
 	Short:                 "Count characters, bytes and words",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		configuration.load()
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		count()
 	},

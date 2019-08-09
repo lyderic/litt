@@ -18,6 +18,9 @@ var cleanCmd = &cobra.Command{
 	Aliases:               []string{"c", "clear"},
 	DisableFlagsInUseLine: true,
 	Short:                 "Clean configuration (for debugging)",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		configuration.load()
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		clean()
 	},

@@ -25,6 +25,9 @@ Assemble montage.
 
 If no montage is specified, the default montage ("1") is used.
 If --no-content is given, "content.tex" is not regenerated, unless it doesn't exist.`,
+	PreRun: func(cmd *cobra.Command, args []string) {
+		configuration.load()
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		assemble()
 	},

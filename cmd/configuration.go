@@ -34,6 +34,7 @@ type Configuration struct {
 }
 
 func (configuration *Configuration) load() {
+	config := viper.GetString("config")
 	if !tools.PathExists(config) {
 		tools.PrintRedf("%q: configuration file not found!\n", config)
 		os.Exit(CONFIG_FILE_NOT_FOUND)
