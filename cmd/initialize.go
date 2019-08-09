@@ -8,32 +8,34 @@ import (
 
 var initializeCmd = &cobra.Command{
 	Use:   "init",
-	Short: fmt.Sprintf("Initialize a new project, creating a minimal %s.json", PROGNAME),
+	Short: fmt.Sprintf("Initialize a new project", PROGNAME),
 	Run: func(cmd *cobra.Command, args []string) {
 		initialize()
+	},
+	PostRun: func(cmd *cobra.Command, args []string) {
+		configuration.persist()
 	},
 }
 
 func initialize() {
-	var c Configuration
-	c.Author = "Lydéric Landry"
-	c.Title = "Unset Title"
-	c.Montages = []Montage{
+	configuration.Author = "Lydéric Landry"
+	configuration.Title = "Unset Title"
+	configuration.Montages = []Montage{
 		Montage{
 			Id:   1,
 			Name: "kdp",
 			Path: "meta/montage_kdp.tex",
 		},
 	}
-	c.Files = []string{"chapitre01.lkl"}
-	c.Replacements = []Replacement{
+	configuration.Files = []string{"chapitre01.lkl"}
+	configuration.Replacements = []Replacement{
 		Replacement{
 			From: "\\section{",
 			To:   "\\chapter*{\\centering ",
 		},
 	}
-	c.Double = false
-	fmt.Printf("%#v\n", c)
+	configuration.Double = false
+	fmt.Printf("%#v\n", configuration)
 }
 
 func init() {

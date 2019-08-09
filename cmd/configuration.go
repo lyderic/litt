@@ -1,12 +1,15 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"github.com/lyderic/tools"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
 )
 
 type Montage struct {
@@ -35,37 +38,74 @@ type Configuration struct {
 
 func (configuration *Configuration) load() {
 	config := viper.GetString("config")
-	if !tools.PathExists(config) {
-		tools.PrintRedf("%q: configuration file not found!\n", config)
-		os.Exit(CONFIG_FILE_NOT_FOUND)
-	}
-	viper.SetConfigFile(config)
-	if err := viper.ReadInConfig(); err != nil {
-		tools.PrintRedf("%q: cannot load configuration!\n", config)
+	var content []byte
+	var err error
+	if content, err = ioutil.ReadFile(config); err != nil {
+		tools.PrintRedf("Cannot load configuration\n%s %v\nTry: '%s init'\n", tools.PROMPT, err, PROGNAME)
 		os.Exit(CONFIG_FILE_NOT_LOADABLE)
 	}
-	viper.Set("basedir", getAbsoluteParent(viper.ConfigFileUsed()))
-	err := viper.Unmarshal(&configuration)
-	if err != nil {
-		tools.PrintRedf("%q: invalid configuration file!\n", config)
-		os.Exit(INVALID_CONFIG_FILE)
+	switch filepath.Ext(config) {
+	case ".json":
+		if err := json.Unmarshal(content, &configuration); err != nil {
+			tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
+			os.Exit(UNMARSHALING_FAILED)
+		}
+	case ".yaml":
+		if err := yaml.Unmarshal(content, &configuration); err != nil {
+			tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
+			os.Exit(UNMARSHALING_FAILED)
+		}
+	default:
+		tools.PrintRedf("Invalid configuration format: %s. Only json or yaml are valid.\n", filepath.Ext(config))
+		os.Exit(INVALID_CONFIGURATION_FORMAT)
 	}
 	configuration.check()
 }
 
 func (configuration *Configuration) check() {
+	if len(configuration.Files) == 0 {
+		tools.PrintRedf("No markdown file defined in %q\n", viper.GetString("config"))
+		os.Exit(FILE_NOT_DEFINED)
+	}
 	for _, file := range configuration.Files {
 		path := filepath.Join(viper.GetString("basedir"), file)
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			tools.PrintRedf("Error in configuration file: %q\nListed file not found on disk: %q\n", viper.ConfigFileUsed(), path)
+		finfo, err := os.Stat(path)
+		if os.IsNotExist(err) {
+			tools.PrintRedf("Error in configuration file: %q\nListed file not found on disk: %q\n", viper.GetString("config"), path)
 			os.Exit(LISTED_FILE_NOT_FOUND)
 		}
+		if finfo.Size() == 0 {
+			tools.PrintRedf("This file is empty: %s\n", path)
+			os.Exit(EMPTY_FILE)
+		}
+	}
+	if len(configuration.Montages) == 0 {
+		tools.PrintRedf("No montage defined in %q\n", viper.GetString("config"))
+		os.Exit(MONTAGE_NOT_DEFINED)
 	}
 	for _, montage := range configuration.Montages {
 		path := filepath.Join(viper.GetString("basedir"), montage.Path)
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			tools.PrintRedf("Error in configuration file: %q\nListed montage not found on disk: %+v\nFile not found: %q\n", viper.ConfigFileUsed(), montage, path)
+		finfo, err := os.Stat(path)
+		if os.IsNotExist(err) {
+			tools.PrintRedf("Error in configuration file: %q\nListed montage not found on disk: %+v\nFile not found: %q\n", viper.GetString("config"), montage, path)
 			os.Exit(LISTED_MONTAGE_NOT_FOUND)
 		}
+		if finfo.Size() == 0 {
+			tools.PrintRedf("This file is empty: %s\n", path)
+			os.Exit(EMPTY_FILE)
+		}
+	}
+}
+
+func (configuration *Configuration) persist() {
+	var data []byte
+	var err error
+	if data, err = json.MarshalIndent(configuration, "", "  "); err != nil {
+		tools.PrintRedf("JSON marshaling failed! %v\n", err)
+		os.Exit(MARSHALING_FAILED)
+	}
+	if ioutil.WriteFile(viper.GetString("config"), data, 0644); err != nil {
+		tools.PrintRedf("Persisting configuration failed! %v\n", err)
+		os.Exit(WRITE_FILE_FAILED)
 	}
 }

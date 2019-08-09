@@ -29,8 +29,9 @@ func Execute() {
 
 func init() {
 	config := "./" + PROGNAME + ".json" // default config file
-	rootCmd.Flags().StringP("config", "c", config, "configuration `file`")
-	viper.BindPFlag("config", rootCmd.Flags().Lookup("config"))
+	rootCmd.PersistentFlags().StringP("config", "c", config, "configuration `file`")
+	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.SetEnvPrefix(strings.ToUpper(PROGNAME))
 	viper.AutomaticEnv() // config file can now be set with envvar 'LITT_CONFIG'
+	viper.Set("basedir", getAbsoluteParent(config))
 }
