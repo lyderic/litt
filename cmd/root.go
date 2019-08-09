@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"log"
+	"os"
 	"strings"
 
+	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -23,7 +24,8 @@ computer it is running on.`, PROGNAME, VERSION),
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatal(err)
+		tools.PrintYellowln(err)
+		os.Exit(ROOT_EXECUTE_ERROR)
 	}
 }
 

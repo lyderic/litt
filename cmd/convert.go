@@ -12,8 +12,9 @@ import (
 )
 
 var convertCmd = &cobra.Command{
-	Use:   "convert",
-	Short: "Convert configuration file from json to yaml",
+	Use:                   "convert",
+	Short:                 "Convert configuration file from json to yaml",
+	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		convert()
 	},
