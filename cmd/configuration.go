@@ -51,7 +51,7 @@ func (configuration *Configuration) load() {
 	case ".yaml":
 		err = yaml.Unmarshal(content, &configuration)
 	default:
-		reportInvalidConfigurationFormat()
+		abortIfInvalidConfigurationFormat()
 	}
 	if err != nil {
 		tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
@@ -109,7 +109,7 @@ func (configuration *Configuration) persist() {
 	case ".yaml":
 		data, err = yaml.Marshal(configuration)
 	default:
-		reportInvalidConfigurationFormat()
+		abortIfInvalidConfigurationFormat()
 	}
 	if err != nil {
 		tools.PrintRedf("JSON marshaling failed! %v\n", err)

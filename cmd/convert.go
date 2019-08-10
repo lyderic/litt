@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -15,7 +16,7 @@ import (
 
 var convertCmd = &cobra.Command{
 	Use:                   "convert",
-	Short:                 "Convert configuration file from json to yaml",
+	Short:                 "Convert configuration file from/to json to/from yaml",
 	DisableFlagsInUseLine: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		convert()
@@ -25,32 +26,29 @@ var convertCmd = &cobra.Command{
 func convert() {
 	configuration.load()
 	config := viper.GetString("config")
+	var err error
+	var data []byte
+	var path string
 	switch filepath.Ext(config) {
 	case ".json":
-		yamlpath := strings.Replace(viper.GetString("config"), "json", "yaml", 1)
-		var err error
-		var data []byte
-		if data, err = yaml.Marshal(&configuration); err != nil {
-			log.Fatal(err)
-		}
-		if err = ioutil.WriteFile(yamlpath, data, 0644); err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("YAML file created: %q\n", yamlpath)
+		path = strings.Replace(viper.GetString("config"), "json", "yaml", 1)
+		data, err = yaml.Marshal(&configuration)
+		fmt.Printf("Creating YAML file: %q\n", path)
 	case ".yaml":
-		jsonpath := strings.Replace(viper.GetString("config"), "yaml", "json", 1)
-		var err error
-		var data []byte
-		if data, err = json.MarshalIndent(&configuration, "", "  "); err != nil {
-			log.Fatal(err)
-		}
-		if err = ioutil.WriteFile(jsonpath, data, 0644); err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("JSON file created: %q\n", jsonpath)
+		path := strings.Replace(viper.GetString("config"), "yaml", "json", 1)
+		data, err = json.MarshalIndent(&configuration, "", "  ")
+		fmt.Printf("Creating JSON file: %q\n", path)
 	default:
-		reportInvalidConfigurationFormat()
+		abortIfInvalidConfigurationFormat()
 	}
+	if err != nil {
+		tools.PrintRedln("Configuration marshaling failed!")
+		log.Fatal(err)
+	}
+	if err = ioutil.WriteFile(path, data, 0644); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(">OK")
 }
 
 func init() {
