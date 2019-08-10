@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -51,8 +49,7 @@ func convert() {
 		}
 		fmt.Printf("JSON file created: %q\n", jsonpath)
 	default:
-		tools.PrintRedf("Invalid configuration format: %s. Only json or yaml are valid.\n", filepath.Ext(config))
-		os.Exit(INVALID_CONFIGURATION_FORMAT)
+		reportInvalidConfigurationFormat()
 	}
 }
 

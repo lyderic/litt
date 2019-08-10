@@ -51,8 +51,7 @@ func (configuration *Configuration) load() {
 	case ".yaml":
 		err = yaml.Unmarshal(content, &configuration)
 	default:
-		tools.PrintRedf("Invalid configuration format: %s. Only json or yaml are valid.\n", filepath.Ext(config))
-		os.Exit(INVALID_CONFIGURATION_FORMAT)
+		reportInvalidConfigurationFormat()
 	}
 	if err != nil {
 		tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
@@ -98,6 +97,10 @@ func (configuration *Configuration) check() {
 
 func (configuration *Configuration) persist() {
 	config := viper.GetString("config")
+	if tools.PathExists(config) {
+		fmt.Printf("%q: file exists. Not overwritten.\n", config)
+		return
+	}
 	var data []byte
 	var err error
 	switch filepath.Ext(config) {
@@ -106,8 +109,7 @@ func (configuration *Configuration) persist() {
 	case ".yaml":
 		data, err = yaml.Marshal(configuration)
 	default:
-		tools.PrintRedf("Invalid configuration format: %s. Only json or yaml are valid.\n", filepath.Ext(config))
-		os.Exit(INVALID_CONFIGURATION_FORMAT)
+		reportInvalidConfigurationFormat()
 	}
 	if err != nil {
 		tools.PrintRedf("JSON marshaling failed! %v\n", err)

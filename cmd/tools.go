@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -60,4 +61,9 @@ func sanitizeAllFiles() {
 	}
 	n := idx + 1
 	fmt.Printf("%s %d file%s processed\n", tools.PROMPT, n, tools.Ternary(n > 1, "s", ""))
+}
+
+func reportInvalidConfigurationFormat() {
+	tools.PrintRedf("Invalid configuration format: %q. Only json or yaml are valid.\n", filepath.Ext(viper.GetString("config")))
+	os.Exit(INVALID_CONFIGURATION_FORMAT)
 }
