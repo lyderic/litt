@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/gobuffalo/packr"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -43,7 +43,7 @@ func initialize() {
 		fmt.Println("Project directory has to exist and has to be empty!")
 		return
 	}
-	box := packr.NewBox("../template")
+	box := packr.New("templatebox", "../template")
 	templateListing := box.List()
 	for idx, file := range templateListing {
 		fmt.Println("Processing", file)
