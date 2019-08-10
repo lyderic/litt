@@ -29,7 +29,7 @@ func initialize() {
 	}
 	configuration.Author = viper.GetString("author")
 	configuration.Title = viper.GetString("title")
-	fmt.Printf("Creating new project with config file: %q\n", viper.GetString("config"))
+	fmt.Printf("New project created with config file: %q\n", viper.GetString("config"))
 	fmt.Printf("Author: %s\n", viper.GetString("author"))
 	fmt.Printf("Title: %s\n", viper.GetString("title"))
 	// basedir has to be empty AND exist
@@ -39,7 +39,6 @@ func initialize() {
 		log.Fatal(err)
 	}
 	if len(listing) > 0 || !tools.PathExists(basedir) {
-		tools.PrintRed("FAILED! ")
 		fmt.Println("Project directory has to exist and has to be empty!")
 		return
 	}
@@ -77,9 +76,7 @@ func initialize() {
 			log.Fatal(err)
 		}
 	}
-	fmt.Print("> ")
-	tools.PrintGreenln("Ok")
-
+	fmt.Println("> Ok")
 }
 
 func init() {

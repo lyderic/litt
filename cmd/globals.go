@@ -1,7 +1,11 @@
 package cmd
 
 const (
+<<<<<<< HEAD
 	VERSION                      = "0.6.5"
+=======
+	VERSION                      = "0.6.3"
+>>>>>>> parent of e41828c... 0.6.4: improved reporting to user
 	PROGNAME                     = "litt"
 	EMPTY_FILE                   = 2
 	CONFIG_FILE_NOT_LOADABLE     = 4
