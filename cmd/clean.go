@@ -50,6 +50,11 @@ func cleanDir(dir string) (n int) {
 	for _, fifo := range listing {
 		name := fifo.Name()
 		path := filepath.Join(dir, name)
+		if filepath.Base(path) == "content.tex" {
+			fmt.Println(tools.PROMPT, path)
+			os.Remove(path)
+			n++
+		}
 		for _, extension := range extensionsToClean {
 			if strings.HasSuffix(name, extension) {
 				fmt.Println(tools.PROMPT, path)

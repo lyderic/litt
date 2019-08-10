@@ -52,7 +52,8 @@ func convert() {
 	if err = ioutil.WriteFile(path, data, 0644); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("> Ok")
+	fmt.Print("> ")
+	tools.PrintGreenln("Ok")
 }
 
 func init() {
