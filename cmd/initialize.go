@@ -20,22 +20,6 @@ var initializeCmd = &cobra.Command{
 func initialize() {
 	configuration.Author = "Lydéric Landry"
 	configuration.Title = "Unset Title"
-	configuration.Montages = []Montage{
-		Montage{
-			Id:   1,
-			Name: "kdp",
-			Path: "meta/montage_kdp.tex",
-		},
-	}
-	configuration.Files = []string{"chapitre01.lkl"}
-	configuration.Replacements = []Replacement{
-		Replacement{
-			From: "\\section{",
-			To:   "\\chapter*{\\centering ",
-		},
-	}
-	configuration.Double = false
-	fmt.Printf("%#v\n", configuration)
 }
 
 func init() {

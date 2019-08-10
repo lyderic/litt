@@ -97,13 +97,23 @@ func (configuration *Configuration) check() {
 }
 
 func (configuration *Configuration) persist() {
+	config := viper.GetString("config")
 	var data []byte
 	var err error
-	if data, err = json.MarshalIndent(configuration, "", "  "); err != nil {
+	switch filepath.Ext(config) {
+	case ".json":
+		data, err = json.MarshalIndent(configuration, "", "  ")
+	case ".yaml":
+		data, err = yaml.Marshal(configuration)
+	default:
+		tools.PrintRedf("Invalid configuration format: %s. Only json or yaml are valid.\n", filepath.Ext(config))
+		os.Exit(INVALID_CONFIGURATION_FORMAT)
+	}
+	if err != nil {
 		tools.PrintRedf("JSON marshaling failed! %v\n", err)
 		os.Exit(MARSHALING_FAILED)
 	}
-	if ioutil.WriteFile(viper.GetString("config"), data, 0644); err != nil {
+	if ioutil.WriteFile(config, data, 0644); err != nil {
 		tools.PrintRedf("Persisting configuration failed! %v\n", err)
 		os.Exit(WRITE_FILE_FAILED)
 	}
