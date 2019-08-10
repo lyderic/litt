@@ -31,7 +31,7 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	config := "./" + PROGNAME + ".json" // default config file
+	config := PROGNAME + ".yaml" // default config file
 	rootCmd.PersistentFlags().StringP("config", "c", config, "configuration `file`")
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.SetEnvPrefix(strings.ToUpper(PROGNAME))

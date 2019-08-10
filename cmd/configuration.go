@@ -41,7 +41,8 @@ func (configuration *Configuration) load() {
 	var content []byte
 	var err error
 	if content, err = ioutil.ReadFile(config); err != nil {
-		tools.PrintRedf("Cannot load configuration\n%s %v\nTry: '%s init'\n", tools.PROMPT, err, PROGNAME)
+		tools.PrintRedln("Cannot load configuration")
+		fmt.Printf("%v\nTry: '%s init' or '%s -c litt.json <command>'\n", err, PROGNAME, PROGNAME)
 		os.Exit(CONFIG_FILE_NOT_LOADABLE)
 	}
 	switch filepath.Ext(config) {
