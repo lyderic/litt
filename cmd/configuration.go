@@ -28,12 +28,12 @@ type Replacement struct {
 }
 
 type Configuration struct {
-	Author       string        `json:"author" yaml:"author"`
-	Title        string        `json:"title" yaml:"title"`
-	Montages     []Montage     `json:"montages" yaml:"montages"`
-	Files        []string      `json:"files" yaml:"files"`
-	Replacements []Replacement `json:"replacements" yaml:"replacements"`
-	Double       bool          `json:"double" yaml:"double"` // when double compilation is required
+	Author       string        `json:"author,omitempty" yaml:"author,omitempty"`
+	Title        string        `json:"title,omitempty" yaml:"title,omitempty"`
+	Montages     []Montage     `json:"montages,omitempty" yaml:"montages,omitempty"`
+	Files        []string      `json:"files,omitempty" yaml:"files,omitempty"`
+	Replacements []Replacement `json:"replacements,omitempty" yaml:"replacements,omitempty"`
+	Double       bool          `json:"double,omitempty" yaml:"double,omitempty"` // when double compilation is required
 }
 
 func (configuration *Configuration) load() {
@@ -63,35 +63,35 @@ func (configuration *Configuration) load() {
 
 func (configuration *Configuration) check() {
 	if len(configuration.Files) == 0 {
-		tools.PrintRedf("No markdown file defined in %q\n", viper.GetString("config"))
-		os.Exit(FILE_NOT_DEFINED)
-	}
-	for _, file := range configuration.Files {
-		path := filepath.Join(viper.GetString("basedir"), file)
-		finfo, err := os.Stat(path)
-		if os.IsNotExist(err) {
-			tools.PrintRedf("Error in configuration file: %q\nListed file not found on disk: %q\n", viper.GetString("config"), path)
-			os.Exit(LISTED_FILE_NOT_FOUND)
-		}
-		if finfo.Size() == 0 {
-			tools.PrintRedf("This file is empty: %s\n", path)
-			os.Exit(EMPTY_FILE)
+		tools.PrintYellowf("No markdown file defined in %q\n", viper.GetString("config"))
+	} else {
+		for _, file := range configuration.Files {
+			path := filepath.Join(viper.GetString("basedir"), file)
+			finfo, err := os.Stat(path)
+			if os.IsNotExist(err) {
+				tools.PrintRedf("Error in configuration file: %q\nListed file not found on disk: %q\n", viper.GetString("config"), path)
+				os.Exit(LISTED_FILE_NOT_FOUND)
+			}
+			if finfo.Size() == 0 {
+				tools.PrintRedf("This file is empty: %s\n", path)
+				os.Exit(EMPTY_FILE)
+			}
 		}
 	}
 	if len(configuration.Montages) == 0 {
-		tools.PrintRedf("No montage defined in %q\n", viper.GetString("config"))
-		os.Exit(MONTAGE_NOT_DEFINED)
-	}
-	for _, montage := range configuration.Montages {
-		path := filepath.Join(viper.GetString("basedir"), montage.Path)
-		finfo, err := os.Stat(path)
-		if os.IsNotExist(err) {
-			tools.PrintRedf("Error in configuration file: %q\nListed montage not found on disk: %+v\nFile not found: %q\n", viper.GetString("config"), montage, path)
-			os.Exit(LISTED_MONTAGE_NOT_FOUND)
-		}
-		if finfo.Size() == 0 {
-			tools.PrintRedf("This file is empty: %s\n", path)
-			os.Exit(EMPTY_FILE)
+		tools.PrintYellowf("No montage defined in %q\n", viper.GetString("config"))
+	} else {
+		for _, montage := range configuration.Montages {
+			path := filepath.Join(viper.GetString("basedir"), montage.Path)
+			finfo, err := os.Stat(path)
+			if os.IsNotExist(err) {
+				tools.PrintRedf("Error in configuration file: %q\nListed montage not found on disk: %+v\nFile not found: %q\n", viper.GetString("config"), montage, path)
+				os.Exit(LISTED_MONTAGE_NOT_FOUND)
+			}
+			if finfo.Size() == 0 {
+				tools.PrintRedf("This file is empty: %s\n", path)
+				os.Exit(EMPTY_FILE)
+			}
 		}
 	}
 }

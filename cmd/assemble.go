@@ -34,7 +34,12 @@ If --no-content is given, "content.tex" is not regenerated, unless it doesn't ex
 }
 
 func assemble() {
-	montage := getSelectedMontage()
+	var montage Montage
+	var err error
+	if montage, err = getSelectedMontage(); err != nil {
+		tools.PrintRedf("Montage not found: %v\n", err)
+		return
+	}
 	fmt.Printf("Assembling montage %q\n", montage.Name)
 	sanitizeAllFiles()
 	buildContent(montage)

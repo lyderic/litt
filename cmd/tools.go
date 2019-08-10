@@ -30,7 +30,11 @@ func getMontageDir(montage Montage) string {
 	return montageAbsoluteDir
 }
 
-func getSelectedMontage() (montage Montage) {
+func getSelectedMontage() (montage Montage, err error) {
+	if len(configuration.Montages) == 0 {
+		err = fmt.Errorf("No montage defined in configuration file %q", viper.GetString("config"))
+		return
+	}
 	found := false
 	for _, current := range configuration.Montages {
 		if current.Name == viper.GetString("reference") || strconv.Itoa(current.Id) == viper.GetString("reference") {
@@ -40,7 +44,8 @@ func getSelectedMontage() (montage Montage) {
 		}
 	}
 	if !found {
-		log.Fatalf("%s: montage not found! Try: '%s list'\n", viper.GetString("reference"), PROGNAME)
+		err = fmt.Errorf("%s: montage not found! Try: '%s list'\n", viper.GetString("reference"), PROGNAME)
+		return
 	}
 	return
 }
