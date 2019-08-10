@@ -1,0 +1,18 @@
+author: {{ .Author }}
+title: {{ .Title }}
+montages:
+- id: 1
+  name: book
+  path: meta/montage-book.tex
+- id: 2
+  name: manuscrit
+  path: meta/montage-manuscrit.tex
+files:
+- chapitre01.lkl
+- chapitre02.lkl
+replacements:
+- from: \section{
+  to: '\chapter*{\centering '
+- from: \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+  to: \ornament{}
+double: true
