@@ -32,7 +32,6 @@ func initialize() {
 	fmt.Printf("New project created with config file: %q\n", viper.GetString("config"))
 	fmt.Printf("Author: %s\n", viper.GetString("author"))
 	fmt.Printf("Title: %s\n", viper.GetString("title"))
-	usingTemplate := viper.GetBool("template")
 	// basedir has to be empty AND exist
 	basedir := viper.GetString("basedir")
 	listing, err := ioutil.ReadDir(basedir)
@@ -43,11 +42,6 @@ func initialize() {
 		fmt.Println("Project directory has to exist and has to be empty!")
 		return
 	}
-	if !usingTemplate {
-		fmt.Println("Not using template")
-		return
-	}
-	fmt.Println("Using template...")
 	box := packr.NewBox("../template")
 	templateListing := box.List()
 	for idx, file := range templateListing {
@@ -90,8 +84,5 @@ func init() {
 	initializeCmd.Flags().StringP("author", "a", "Lydéric Landry", "set up author")
 	viper.BindPFlag("author", initializeCmd.Flags().Lookup("author"))
 	initializeCmd.Flags().StringP("title", "t", "", "(required) set up title")
-	//initializeCmd.MarkFlagRequired("title")
 	viper.BindPFlag("title", initializeCmd.Flags().Lookup("title"))
-	initializeCmd.Flags().BoolP("template", "T", false, "use project template")
-	viper.BindPFlag("template", initializeCmd.Flags().Lookup("template"))
 }
