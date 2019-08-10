@@ -30,10 +30,14 @@ func Execute() {
 }
 
 func init() {
+	cobra.OnInitialize(initConfig)
 	config := "./" + PROGNAME + ".json" // default config file
 	rootCmd.PersistentFlags().StringP("config", "c", config, "configuration `file`")
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.SetEnvPrefix(strings.ToUpper(PROGNAME))
 	viper.AutomaticEnv() // config file can now be set with envvar 'LITT_CONFIG'
+}
+
+func initConfig() {
 	viper.Set("basedir", getAbsoluteParent(viper.GetString("config")))
 }

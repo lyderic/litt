@@ -13,9 +13,9 @@ import (
 )
 
 type Montage struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
-	Path string `json:"path"`
+	Id   int    `json:"id" yaml:"id"`
+	Name string `json:"name" yaml:"name"`
+	Path string `json:"path" yaml:"path"`
 }
 
 func (montage Montage) String() string {
@@ -23,17 +23,17 @@ func (montage Montage) String() string {
 }
 
 type Replacement struct {
-	From string `json:"from"`
-	To   string `json:"to"`
+	From string `json:"from" yaml:"from"`
+	To   string `json:"to" yaml:"to"`
 }
 
 type Configuration struct {
-	Author       string        `json:"author"`
-	Title        string        `json:"title"`
-	Montages     []Montage     `json:"montages"`
-	Files        []string      `json:"files"`
-	Replacements []Replacement `json:"replacements"`
-	Double       bool          `json:"double"` // when double compilation is required
+	Author       string        `json:"author" yaml:"author"`
+	Title        string        `json:"title" yaml:"title"`
+	Montages     []Montage     `json:"montages" yaml:"montages"`
+	Files        []string      `json:"files" yaml:"files"`
+	Replacements []Replacement `json:"replacements" yaml:"replacements"`
+	Double       bool          `json:"double" yaml:"double"` // when double compilation is required
 }
 
 func (configuration *Configuration) load() {
@@ -46,18 +46,16 @@ func (configuration *Configuration) load() {
 	}
 	switch filepath.Ext(config) {
 	case ".json":
-		if err := json.Unmarshal(content, &configuration); err != nil {
-			tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
-			os.Exit(UNMARSHALING_FAILED)
-		}
+		err = json.Unmarshal(content, &configuration)
 	case ".yaml":
-		if err := yaml.Unmarshal(content, &configuration); err != nil {
-			tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
-			os.Exit(UNMARSHALING_FAILED)
-		}
+		err = yaml.Unmarshal(content, &configuration)
 	default:
 		tools.PrintRedf("Invalid configuration format: %s. Only json or yaml are valid.\n", filepath.Ext(config))
 		os.Exit(INVALID_CONFIGURATION_FORMAT)
+	}
+	if err != nil {
+		tools.PrintRedf("%q: invalid configuration file!\n%s %v\n", config, tools.PROMPT, err)
+		os.Exit(UNMARSHALING_FAILED)
 	}
 	configuration.check()
 }
