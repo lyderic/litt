@@ -2,7 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
+	"text/template"
 
+	"github.com/gobuffalo/packr"
 	"github.com/lyderic/tools"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,9 +20,6 @@ var initializeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		initialize()
 	},
-	PostRun: func(cmd *cobra.Command, args []string) {
-		configuration.persist()
-	},
 }
 
 func initialize() {
@@ -25,7 +28,57 @@ func initialize() {
 	fmt.Printf("New project created with config file: %q\n", viper.GetString("config"))
 	fmt.Printf("Author: %s\n", viper.GetString("author"))
 	fmt.Printf("Title: %s\n", viper.GetString("title"))
-	fmt.Printf("%ssing template\n", tools.Ternary(viper.GetBool("template"), "U", "Not u"))
+	usingTemplate := viper.GetBool("template")
+	if !usingTemplate {
+		fmt.Println("Not using template")
+		return
+	}
+	fmt.Println("Using template...")
+	// basedir has to be empty AND exist
+	basedir := viper.GetString("basedir")
+	listing, err := ioutil.ReadDir(basedir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if len(listing) == 0 && !tools.PathExists(basedir) {
+		fmt.Println("Project directory has to exist and has to be empty!")
+		return
+	}
+	box := packr.NewBox("../template")
+	templateListing := box.List()
+	for idx, file := range templateListing {
+		fmt.Println("Processing", file)
+		var path, dir, content string
+		var err error
+		var tmpl *template.Template
+		var outputh *os.File
+		path = filepath.Join(basedir, file)
+		dir = filepath.Dir(path)
+		if !tools.PathExists(dir) {
+			err = os.MkdirAll(dir, 0755)
+			if err != nil {
+				panic(err)
+			}
+		}
+		content, err = box.FindString(file)
+		if err != nil {
+			log.Fatal(err)
+		}
+		tmpl, err = template.New(fmt.Sprintf("%02d", idx+1)).Parse(content)
+		if err != nil {
+			log.Fatal(err)
+		}
+		outputh, err = os.Create(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer outputh.Close()
+		err = tmpl.Execute(outputh, configuration)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	fmt.Println("> Ok")
 }
 
 func init() {
