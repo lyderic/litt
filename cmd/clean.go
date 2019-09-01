@@ -17,7 +17,7 @@ var cleanCmd = &cobra.Command{
 	Use:                   "clean",
 	Aliases:               []string{"c", "clear"},
 	DisableFlagsInUseLine: true,
-	Short:                 "Clean configuration (for debugging)",
+	Short:                 "Clean configuration",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		configuration.load()
 	},
@@ -31,6 +31,27 @@ var extensionsToClean = []string{".aux", ".log", ".out", ".html",
 	".4ct", ".4tc", ".rtf", ".pdf", ".epub"}
 
 func clean() {
+	cleanMontages()
+	//cleanAll()
+}
+
+func cleanAll() {
+	err := filepath.Walk(viper.GetString("basedir"), func(path string, finfo os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if finfo.IsDir() {
+			return nil
+		}
+		fmt.Println(">>>>>", path)
+		return nil
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func cleanMontages() {
 	for _, montage := range configuration.Montages {
 		fmt.Printf("Cleaning montage %q\n", montage.Name)
 		a := cleanDir(getMontageDir(montage))
