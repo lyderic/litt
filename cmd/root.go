@@ -32,8 +32,11 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	config := PROGNAME + ".yaml" // default config file
+	debug := false
 	rootCmd.PersistentFlags().StringP("config", "c", config, "configuration `file`")
+	rootCmd.PersistentFlags().BoolP("debug", "d", debug, "show debugging information")
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
+	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
 	viper.SetEnvPrefix(strings.ToUpper(PROGNAME))
 	viper.AutomaticEnv() // config file can now be set with envvar 'LITT_CONFIG'
 }
