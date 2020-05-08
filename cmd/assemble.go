@@ -63,6 +63,7 @@ func buildContent(montage Montage) {
 	fmt.Println("Building content")
 	fmt.Println(tools.PROMPT, "creating content.tex with pandoc")
 	var args []string
+	args = append(args, "--from", "markdown-auto_identifiers-space_in_atx_header", "--to", "latex")
 	args = append(args, "-o")
 	args = append(args, contentFile)
 	for _, file := range configuration.Files {
@@ -70,6 +71,9 @@ func buildContent(montage Montage) {
 	}
 	cmd := exec.Command("pandoc", args...)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+	if viper.GetBool("debug") {
+		tools.PrintYellowln(cmd.Args)
+	}
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)
