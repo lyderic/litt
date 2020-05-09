@@ -112,7 +112,7 @@ func buildpdf(montage Montage) {
 
 func pdflatex(tex string) {
 	fmt.Printf("%s running pdflatex on %q\n", tools.PROMPT, tex)
-	cmd := exec.Command("pdflatex", tex)
+	cmd := exec.Command("pdflatex", "-halt-on-error", "-shell-escape", tex)
 	if viper.GetBool("verbose") {
 		cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	}
