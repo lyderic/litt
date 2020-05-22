@@ -13,6 +13,6 @@ files:
 replacements:
 - from: \section{
   to: '\chapter*{\centering '
-- from: \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+- from: \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
   to: \ornament{}
 double: true
