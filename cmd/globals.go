@@ -1,7 +1,7 @@
 package cmd
 
 const (
-	VERSION                      = "0.9.0"
+	VERSION                      = "0.9.1"
 	PROGNAME                     = "litt"
 	EMPTY_FILE                   = 2
 	CONFIG_FILE_NOT_LOADABLE     = 4

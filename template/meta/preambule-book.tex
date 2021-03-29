@@ -4,6 +4,12 @@
 \widowpenalty=10000
 \clubpenalty=10000
 
+% Meilleure coupe des mots
+\usepackage{microtype}
+
+% No numeration on empty pages
+\usepackage{emptypage}
+
 % Langue française
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -39,6 +45,9 @@
 % En-têtes (bold + centered)
 \newcommand{\entete}[1]{\noindent \begin{center}\textbf{#1}\end{center} \par }
 \newcommand{\doubletete}[2]{\noindent \begin{center}\textbf{#1 \linebreak #2}\end{center} \par }
+
+% For the dedication above chapter I
+\usepackage{quotchap}
 
 % DEBUG
 %\usepackage{showframe}
